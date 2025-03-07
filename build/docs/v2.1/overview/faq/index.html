@@ -11,7 +11,7 @@
 
 
 <meta name="aes-config" content="pid=xux-opensource&amp;user_type=101&amp;uid=&amp;username=&amp;dim10=seata"><link rel="stylesheet" href="/assets/css/styles.9644caf2.css">
-<script src="/assets/js/runtime~main.b151f252.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.99d8d0e4.js" defer="defer"></script>
 <script src="/assets/js/main.03d5bf22.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -184,8 +184,8 @@ when the undolog serialization is configured as Jackson, the Jackson version nee
 <hr>
 <h3 id="10">Q: 10. Why didn&#x27;t my mybatis operation return auto-generated ID? </h3>
 <p><strong>A:</strong>
-plan1.You should update the configuraton of <code>mybatis</code>: set annotation <code>@Options(useGeneratedKeys = true, keyProperty = &quot;id&quot;)</code> or set the value of useGeneratedKeys and keyProperty in <code>mybatis</code> xml configuraton<br>
-<!-- -->plan2.Delete the id field of the undo_log table</p>
+plan1.You should update the configuraton of <code>mybatis</code>: set annotation <code>@Options(useGeneratedKeys = true, keyProperty = &quot;id&quot;)</code> or set the value of useGeneratedKeys and keyProperty in <code>mybatis</code> xml configuraton
+plan2.Delete the id field of the undo_log table</p>
 <hr>
 <h3 id="11">Q: 11.I can&#x27;t find this package<!-- -->:io<!-- -->.seata.codec.protobuf.generated,and cant&#x27;t run seata server?</h3>
 <p><strong>A:</strong>
@@ -306,7 +306,7 @@ You can execute this command: <code>./mvnw clean install -DskipTests=true</code>
 <p>@GlobalTransactional(timeout=60000)
 public void A（）{</p>
 <p>call remoting B();//Remote call B service
-​ local DB operation;</p>
+local DB operation;</p>
 <p>}</p>
 <p>public void B() {</p>
 <p>}</p>

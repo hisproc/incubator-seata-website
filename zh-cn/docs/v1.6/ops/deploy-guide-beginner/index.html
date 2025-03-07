@@ -11,7 +11,7 @@
 
 
 <meta name="aes-config" content="pid=xux-opensource&amp;user_type=101&amp;uid=&amp;username=&amp;dim10=seata"><link rel="stylesheet" href="/zh-cn/assets/css/styles.9644caf2.css">
-<script src="/zh-cn/assets/js/runtime~main.5e23cf19.js" defer="defer"></script>
+<script src="/zh-cn/assets/js/runtime~main.81fc36cb.js" defer="defer"></script>
 <script src="/zh-cn/assets/js/main.29bed568.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -80,13 +80,14 @@
 <li>源码启动: 执行ServerApplication.java的main方法</li>
 <li>命令启动: seata-server.sh -h 127.0.0.1 -p 8091 -m db</li>
 </ul>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">    -h: 注册到注册中心的ip</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    -p: Server rpc 监听端口</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    -m: 全局事务会话信息存储模式，file、db、redis，优先读取启动参数 (Seata-Server 1.3及以上版本支持redis)</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <p>注: 堆内存建议分配2G，堆外内存1G</p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="业务系统集成client">业务系统集成Client<a href="#业务系统集成client" class="hash-link" aria-label="业务系统集成Client的直接链接" title="业务系统集成Client的直接链接">​</a></h3>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="步骤一添加seata依赖建议单选">步骤一：添加seata依赖（建议单选）<a href="#步骤一添加seata依赖建议单选" class="hash-link" aria-label="步骤一：添加seata依赖（建议单选）的直接链接" title="步骤一：添加seata依赖（建议单选）的直接链接">​</a></h4>
 <ul>
 <li>依赖seata-all</li>
 <li>依赖seata-spring-boot-starter，支持yml、properties配置(.conf可删除)，内部已依赖seata-all</li>
-<li>依赖spring-cloud-starter-alibaba-seata，内部集成了seata，并实现了xid传递</li>
+<li>依赖spring-cloud-starter-alibaba-seata，内部集成了seata，并 实现了xid传递</li>
 </ul>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="步骤二undo_log建表配置参数仅at模式">步骤二：undo_log建表、配置参数(仅AT模式)<a href="#步骤二undo_log建表配置参数仅at模式" class="hash-link" aria-label="步骤二：undo_log建表、配置参数(仅AT模式)的直接链接" title="步骤二：undo_log建表、配置参数(仅AT模式)的直接链接">​</a></h4>
 <ul>
@@ -106,7 +107,7 @@
 </li>
 <li>
 <p>手动配置可参考下方的例子</p>
-<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">@Primary</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">@Bean(&quot;dataSource&quot;)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">public DataSource dataSource(DataSource druidDataSource) {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    //AT 代理 二选一</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    return new DataSourceProxy(druidDataSource);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    //XA 代理</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    return new DataSourceProxyXA(druidDataSource)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">@Primary</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">@Bean(&quot;dataSource&quot;)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">public DataSource dataSource(DataSource druidDataSource) {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    //AT 代理 二选一</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    return new DataSourceProxy(druidDataSource);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    //XA 代理</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    return new DataSourceProxyXA(druidDataSource)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复  制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 </li>
 </ul>
 </li>

@@ -11,7 +11,7 @@
 
 
 <meta name="aes-config" content="pid=xux-opensource&amp;user_type=101&amp;uid=&amp;username=&amp;dim10=seata"><link rel="stylesheet" href="/zh-cn/assets/css/styles.9644caf2.css">
-<script src="/zh-cn/assets/js/runtime~main.5e23cf19.js" defer="defer"></script>
+<script src="/zh-cn/assets/js/runtime~main.81fc36cb.js" defer="defer"></script>
 <script src="/zh-cn/assets/js/main.29bed568.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -22,24 +22,24 @@
 <a name="Ad95d"></a>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="一分布式事务产生的背景">一、分布式事务产生的背景<a href="#一分布式事务产生的背景" class="hash-link" aria-label="一、分布式事务产生的背景的直接链接" title="一、分布式事务产生的背景的直接链接">​</a></h2>
 <a name="Q2ayF"></a>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="11-分布式架构演进之--数据库的水平拆分">1.1 分布式架构演进之 - 数据库的水平拆分<a href="#11-分布式架构演进之--数据库的水平拆分" class="hash-link" aria-label="1.1 分布式架构演进之 - 数据库的水平拆分的直接链接" title="1.1 分布式架构演进之 - 数据库的水平拆分的直接链接">​</a></h3>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="11-分布式架构演进之---数据库的水平拆分">1.1 分布式架构演进之 - 数据库的水平拆分<a href="#11-分布式架构演进之---数据库的水平拆分" class="hash-link" aria-label="1.1 分布式架构演进之 - 数据库的水平拆分的直接链接" title="1.1 分布式架构演进之 - 数据库的水平拆分的直接链接">​</a></h3>
 <p>蚂蚁金服的业务数据库起初是单库单表，但随着业务数据规模的快速发展，数据量越来越大，单库单表逐渐成为瓶颈。所以我们对数据库进行了水平拆分，将原单库单表拆分成数据库分片。</p>
 <p>如下图所示，分库分表之后，原来在一个数据库上就能完成的写操作，可能就会跨多个数据库，这就产生了跨数据库事务问题。</p>
 <p><img decoding="async" loading="lazy" alt="image.png" src="/zh-cn/assets/images/2-e3a8a7b0f1e093d70faf16a548dd6742.png" width="325" height="214" class="img_ev3q"></p>
 <a name="WBQbC"></a>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="12-分布式架构演进之--业务服务化拆分">1.2 分布式架构演进之 - 业务服务化拆分<a href="#12-分布式架构演进之--业务服务化拆分" class="hash-link" aria-label="1.2 分布式架构演进之 - 业务服务化拆分的直接链接" title="1.2 分布式架构演进之 - 业务服务化拆分的直接链接">​</a></h3>
-<p>在业务发展初期，“一块大饼”的单业务系统架构，能满足基本的业务需求。但是随着业务的快速发展，系统的访问量和业务复杂程度都在快速增长，单系统架构逐渐成为业务发展瓶颈，解决业务系统的高耦合、可伸缩问题的需求越来越强烈。</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="12-分布式架构演进之---业务服务化拆分">1.2 分布式架构演进之 - 业务服务化拆分<a href="#12-分布式架构演进之---业务服务化拆分" class="hash-link" aria-label="1.2 分布式架构演进之 - 业务服务化拆分的直接链接" title="1.2 分布式架构演进之 - 业务服务化拆分的直接链接">​</a></h3>
+<p>在业务发展初期，“一块大饼”的单业务系统架构，能满足基本的业务需求。但是随  着业务的快速发展，系统的访问量和业务复杂程度都在快速增长，单系统架构逐渐成为业务发展瓶颈，解决业务系统的高耦合、可伸缩问题的需求越来越强烈。</p>
 <p>如下图所示，蚂蚁金服按照面向服务架构（SOA）的设计原则，将单业务系统拆分成多个业务系统，降低了各系统之间的耦合度，使不同的业务系统专注于自身业务，更有利于业务的发展和系统容量的伸缩。</p>
 <p><img decoding="async" loading="lazy" alt="image.png" src="/zh-cn/assets/images/3-548d85e1cdfbab71650a542d5de5d10a.png" width="557" height="277" class="img_ev3q"></p>
 <p>业务系统按照服务拆分之后，一个完整的业务往往需要调用多个服务，如何保证多个服务间的数据一致性成为一个难题。</p>
 <a name="3oIxE"></a>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="二分布式事务理论基础">二、分布式事务理论基础<a href="#二分布式事务理论基础" class="hash-link" aria-label="二、分布式事务理论基础的直接链接" title="二、分布式事务理论基础的直接链接">​</a></h2>
 <a name="akRiW"></a>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="21两阶段提交协议">2.1 两阶段提交协议<a href="#21两阶段提交协议" class="hash-link" aria-label="2.1 两阶段提交协议的直接链接" title="2.1 两阶段提交协议的直接链接">​</a></h3>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="21-两阶段提交协议">2.1 两阶段提交协议<a href="#21-两阶段提交协议" class="hash-link" aria-label="2.1 两阶段提交协议的直接链接" title="2.1 两阶段提交协议的直接链接">​</a></h3>
 <p><img decoding="async" loading="lazy" alt="16_16_18__08_13_2019.jpg" src="/zh-cn/assets/images/4-5933efe8b07271b941670f74b7322a1f.jpeg" width="746" height="419" class="img_ev3q"></p>
 <p>两阶段提交协议：事务管理器分两个阶段来协调资源管理器，第一阶段准备资源，也就是预留事务所需的资源，如果每个资源管理器都资源预留成功，则进行第二阶段资源提交，否则协调资源管理器回滚资源。</p>
 <a name="8tfKI"></a>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="22tcc">2.2 TCC<a href="#22tcc" class="hash-link" aria-label="2.2 TCC的直接链接" title="2.2 TCC的直接链接">​</a></h3>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="22-tcc">2.2 TCC<a href="#22-tcc" class="hash-link" aria-label="2.2 TCC的直接链接" title="2.2 TCC的直接链接">​</a></h3>
 <p><img decoding="async" loading="lazy" alt="16_16_51__08_13_2019.jpg" src="/zh-cn/assets/images/5-79c36a571b40ceb0119e48100150675b.jpeg" width="746" height="416" class="img_ev3q"></p>
 <p>TCC（Try-Confirm-Cancel） 实际上是服务化的两阶段提交协议，业务开发者需要实现这三个服务接口，第一阶段服务由业务代码编排来调用 Try 接口进行资源预留，所有参与者的 Try 接口都成功了，事务管理器会提交事务，并调用每个参与者的 Confirm 接口真正提交业务操作，否则调用每个参与者的 Cancel 接口回滚事务。</p>
 <a name="IXxpF"></a>
@@ -47,10 +47,10 @@
 <p><img decoding="async" loading="lazy" alt="3 分布式事务 Seata 三种模式详解-屹远-9.jpg" src="/zh-cn/assets/images/6-9d33493d97af453a8450f0739fa60a0f.jpeg" width="746" height="420" class="img_ev3q"></p>
 <p>Saga 是一种补偿协议，在 Saga 模式下，分布式事务内有多个参与者，每一个参与者都是一个冲正补偿服务，需要用户根据业务场景实现其正向操作和逆向回滚操作。</p>
 <p>分布式事务执行过程中，依次执行各参与者的正向操作，如果所有正向操作均执行成功，那么分布式事务提交。如果任何一个正向操作执行失败，那么分布式事务会退回去执行前面各参与者的逆向回滚操作，回滚已提交的参与者，使分布式事务回到初始状态。</p>
-<p>Saga 理论出自 Hector &amp; Kenneth 1987发表的论文 Sagas。<br>
+<p>Saga 理论出自 Hector &amp; Kenneth 1987发表的论文 Sagas。<br>
 <br>Saga 正向服务与补偿服务也需要业务开发者实现。</p>
 <a name="fZPaN"></a>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="三seata及其三种模式详解">三、Seata 及其三种模式详解<a href="#三seata及其三种模式详解" class="hash-link" aria-label="三、Seata 及其三种模式详解的直接链接" title="三、Seata 及其三种模式详解的直接链接">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="三seata-及其三种模式详解">三、Seata 及其三种模式详解<a href="#三seata-及其三种模式详解" class="hash-link" aria-label="三、Seata 及其三种模式详解的直接链接" title="三、Seata 及其三种模式详解的直接链接">​</a></h2>
 <a name="IgVM7"></a>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="31-分布式事务-seata-介绍">3.1 分布式事务 Seata 介绍<a href="#31-分布式事务-seata-介绍" class="hash-link" aria-label="3.1 分布式事务 Seata 介绍的直接链接" title="3.1 分布式事务 Seata 介绍的直接链接">​</a></h3>
 <p>Seata（Simple Extensible Autonomous Transaction Architecture，简单可扩展自治事务框架）是 2019 年 1 月份蚂蚁金服和阿里巴巴共同开源的分布式事务解决方案。Seata 开源半年左右，目前已经有超过 1.1 万 star，社区非常活跃。我们热忱欢迎大家参与到 Seata 社区建设中，一同将 Seata 打造成开源分布式事务标杆产品。</p>
@@ -60,11 +60,11 @@
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="32-分布式事务-seata-产品模块">3.2 分布式事务 Seata 产品模块<a href="#32-分布式事务-seata-产品模块" class="hash-link" aria-label="3.2 分布式事务 Seata 产品模块的直接链接" title="3.2 分布式事务 Seata 产品模块的直接链接">​</a></h3>
 <p>如下图所示，Seata 中有三大模块，分别是 TM、RM 和 TC。 其中 TM 和 RM 是作为 Seata 的客户端与业务系统集成在一起，TC 作为 Seata 的服务端独立部署。</p>
 <p><img decoding="async" loading="lazy" alt="image.png" src="/zh-cn/assets/images/8-1e7e5bd472714f2a5eaf932b449942b2.png" width="564" height="301" class="img_ev3q"></p>
-<p>在 Seata 中，分布  式事务的执行流程：</p>
+<p>在 Seata 中，分布式事务的执行流程：</p>
 <ul>
 <li>TM 开启分布式事务（TM 向 TC 注册全局事务记录）；</li>
-<li>按业务场景，编排数据库、服务等事务内资源（RM 向 TC 汇报资源准备状态 ）；</li>
-<li>TM 结束分布式事务，事务一阶段结束（TM 通知 TC 提交/回滚分布式事务）；</li>
+<li>按业务场景，编排数据库、服务等事务内资源（RM 向 TC 汇报资源准备状态 ）；</li>
+<li>TM 结束分布式事务，事务一阶段结束（TM 通知 TC 提交/回滚分布式事务）；</li>
 <li>TC 汇总事务信息，决定分布式事务是提交还是回滚；</li>
 <li>TC 通知所有 RM 提交/回滚 资源，事务二阶段结束；</li>
 </ul>
@@ -74,10 +74,10 @@
 <p><img decoding="async" loading="lazy" alt="15_49_23__08_13_2019.jpg" src="/zh-cn/assets/images/9-92fbc62876258a48b6778d72eaab6af6.jpeg" width="746" height="385" class="img_ev3q"><br></p>
 <a name="784n4"></a>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="231-at-模式">2.3.1 AT 模式<a href="#231-at-模式" class="hash-link" aria-label="2.3.1 AT 模式的直接链接" title="2.3.1 AT 模式的直接链接">​</a></h4>
-<p>今年 1 月份，Seata 开源了 AT 模式。AT 模式是一种无侵入的分布式事务解决方案。在 AT 模式下，用户只需关注自己的“业务 SQL”，用户的 “业务 SQL” 作为一阶段，Seata 框架会自动生成事务的二阶段提交和回滚操作。</p>
+<p>今年 1 月份，Seata 开源了 AT 模式。AT 模式是一种无侵入的分布式事务解决方案。在 AT 模式下，用户只需关注自己的“业务 SQL”，用户的 “业务 SQL” 作为一阶段，Seata 框架会自动生成事务的二阶段提交和回滚操作。</p>
 <p><img decoding="async" loading="lazy" alt="image.png" src="/zh-cn/assets/images/10-c19d842e385a2e54cc4b838e11642851.png" width="521" height="238" class="img_ev3q"><br></p>
 <a name="Acfeo"></a>
-<h5 class="anchor anchorWithStickyNavbar_LWe7" id="at-模式如何做到对业务的无侵入-">AT 模式如何做到对业务的无侵入 ：<a href="#at-模式如何做到对业务的无侵入-" class="hash-link" aria-label="AT 模式如何做到对业务的无侵入 ：的直接链接" title="AT 模式如何做到对业务的无侵入 ：的直接链接">​</a></h5>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="at-模式如何做到对业务的无侵入-">AT 模式如何做到对业务的无侵入 ：<a href="#at-模 式如何做到对业务的无侵入-" class="hash-link" aria-label="AT 模式如何做到对业务的无侵入 ：的直接链接" title="AT 模式如何做到对业务的无侵入 ：的直接链接">​</a></h5>
 <ul>
 <li>一阶段：</li>
 </ul>
@@ -93,7 +93,7 @@
 </ul>
 <p>二阶段如果是回滚的话，Seata 就需要回滚一阶段已经执行的“业务 SQL”，还原业务数据。回滚方式便是用“before image”还原业务数据；但在还原前要首先要校验脏写，对比“数据库当前业务数据”和 “after image”，如果两份数据完全一致就说明没有脏写，可以还原业务数据，如果不一致就说明有脏写，出现脏写就需要转人工处理。</p>
 <p><img decoding="async" loading="lazy" alt="图片5.png" src="/zh-cn/assets/images/13-67b42e8743563de3117194847e4119de.png" width="463" height="317" class="img_ev3q"></p>
-<p>AT 模式的一阶段、二阶段提交和回滚均由 Seata 框架自动生成，用户只需编写“ 业务 SQL”，便能轻松接入分布式事务，AT 模式是一种对业务无任何侵入的分布式事务解决方案。</p>
+<p>AT 模式的一阶段、二阶段提交和回滚均由 Seata 框架自动生成，用户只需编写“业务 SQL”，便能轻松接入分布式事务，AT 模式是一种对业务无任何侵入的分布式事务解决方案。</p>
 <a name="FnD1S"></a>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="232-tcc-模式">2.3.2 TCC 模式<a href="#232-tcc-模式" class="hash-link" aria-label="2.3.2 TCC 模式的直接链接" title="2.3.2 TCC 模式的直接链接">​</a></h4>
 <p>2019 年 3 月份，Seata 开源了 TCC 模式，该模式由蚂蚁金服贡献。TCC 模式需要用户根据自己的业务场景实现 Try、Confirm 和 Cancel 三个操作；事务发起方在一阶段执行 Try 方式，在二阶段提交执行 Confirm 方法，二阶段回滚执行 Cancel 方法。</p>
@@ -107,7 +107,7 @@
 <p><strong>蚂蚁金服在 TCC 的实践经验</strong><br>**<br><img decoding="async" loading="lazy" alt="16_48_02__08_13_2019.jpg" src="/zh-cn/assets/images/15-02cfa1203b468d38c80caa594a7644f7.jpeg" width="746" height="414" class="img_ev3q"></p>
 <p><strong>1 TCC 设计 - 业务模型分 2 阶段设计：</strong></p>
 <p>用户接入 TCC ，最重要的是考虑如何将自己的业务模型拆成两阶段来实现。</p>
-<p>以“扣钱”场景为例，在接入 TCC 前，对 A 账户的扣钱，只需一条更新账户余额的 SQL 便能完成；但是在接入 TCC 之后，用户就需要考虑如何将原来一步就能完成的扣钱操作，拆成两阶段，实现成三个方法，并且保证一阶段 Try  成功的话 二阶段 Confirm 一定能成功。</p>
+<p>以“扣钱”场景为例，在接入 TCC 前，对 A 账户的扣钱，只需一条更新账户余额的 SQL 便能完成；但是在接入 TCC 之后，用户就需要考虑如何将原来一步就能完成的扣钱操作，拆成两阶段，实现成三个方法，并且保证一阶段 Try  成功的话 二阶段 Confirm 一定能成功。</p>
 <p><img decoding="async" loading="lazy" alt="图片7.png" src="/zh-cn/assets/images/16-e07ff8c531571c0ef2887d9dc8b4c83f.png" width="588" height="265" class="img_ev3q"></p>
 <p>如上图所示，</p>
 <p>Try 方法作为一阶段准备方法，需要做资源的检查和预留。在扣钱场景下，Try 要做的事情是就是检查账户余额是否充足，预留转账资金，预留的方式就是冻结 A 账户的 转账资金。Try 方法执行之后，账号 A 余额虽然还是 100，但是其中 30 元已经被冻结了，不能被其他事务使用。</p>
@@ -117,7 +117,7 @@
 <p><strong>2 TCC 设计 - 允许空回滚：</strong><br>**<br><img decoding="async" loading="lazy" alt="16_51_44__08_13_2019.jpg" src="/zh-cn/assets/images/17-b2c8866f3bee9d7eacf27c0e02f0ef68.jpeg" width="746" height="414" class="img_ev3q"></p>
 <p>Cancel 接口设计时需要允许空回滚。在 Try 接口因为丢包时没有收到，事务管理器会触发回滚，这时会触发 Cancel 接口，这时 Cancel 执行时发现没有对应的事务 xid 或主键时，需要返回回滚成功。让事务服务管理器认为已回滚，否则会不断重试，而 Cancel 又没有对应的业务数据可以进行回滚。</p>
 <p><strong>3 TCC 设计 - 防悬挂控制：</strong><br>**<br><img decoding="async" loading="lazy" alt="16_51_56__08_13_2019.jpg" src="/zh-cn/assets/images/18-3cfd6186d46d6c1cf79f4b5aea91aea0.jpeg" width="746" height="416" class="img_ev3q"></p>
-<p>悬挂 的意思是：Cancel 比 Try 接口先执行，出现的原因是 Try 由于网络拥堵而超时，事务管理器生成回滚，触发 Cancel 接口，而最终又收到了 Try 接口调用，但是 Cancel 比 Try 先到。按照前面允许空回滚的逻辑，回滚会返回成功，事务管理器认为事务已回滚成功，则此时的 Try 接口不应该执行，否则会产生数据不一致，所以我们在 Cancel 空回滚返回成功之前先记录该条事务 xid 或业务主键，标识这条记录已经回滚过，Try 接口先检查这条事务xid或业务主键如果已经标记为回滚成功过，则不执行 Try 的业务操作。</p>
+<p>悬挂的意思  是：Cancel 比 Try 接口先执行，出现的原因是 Try 由于网络拥堵而超时，事务管理器生成回滚，触发 Cancel 接口，而最终又收到了 Try 接口调用，但是 Cancel 比 Try 先到。按照前面允许空回滚的逻辑，回滚会返回成功，事务管理器认为事务已回滚成功，则此时的 Try 接口不应该执行，否则会产生数据不一致，所以我们在 Cancel 空回滚返回成功之前先记录该条事务 xid 或业务主键，标识这条记录已经回滚过，Try 接口先检查这条事务xid或业务主键如果已经标记为回滚成功过，则不执行 Try 的业务操作。</p>
 <p><strong>4 TCC 设计 - 幂等控制：</strong><br>**<br><img decoding="async" loading="lazy" alt="16_52_07__08_13_2019.jpg" src="/zh-cn/assets/images/19-cbc9396d9760ae9eee6ef163c21e8034.jpeg" width="746" height="415" class="img_ev3q"></p>
 <p>幂等性的意思是：对同一个系统，使用同样的条件，一次请求和重复的多次请求对系统资源的影响是一致的。因为网络抖动或拥堵可能会超时，事务管理器会对资源进行重试操作，所以很可能一个业务操作会被重复调用，为了不因为重复调用而多次占用资源，需要对服务设计时进行幂等控制，通常我们可以用事务 xid 或业务主键判重来控制。</p>
 <a name="dsMch"></a>
@@ -137,20 +137,20 @@
 </ul>
 <p>缺点：Saga 模式由于一阶段已经提交本地数据库事务，且没有进行“预留”动作，所以不能保证隔离性。后续会讲到对于缺乏隔离性的应对措施。<br><strong>2 基于状态机引擎的 Saga 实现</strong></p>
 <p><img decoding="async" loading="lazy" alt="17_13_19__08_13_2019.jpg" src="/zh-cn/assets/images/22-d2bafd9570e63096283bb8cad41a0f43.png" width="1222" height="646" class="img_ev3q"></p>
-<p>目前 Saga 的实现一般有两种，一种是通过事件驱动架构实现，一种是基于注解加拦截器拦截业务的正向服务实现。Seata 目前是采用事件驱动的机制 来实现的，Seata 实现了一个状态机，可以编排服务的调用流程及正向服务的补偿服务，生成一个 json 文件定义的状态图，状态机引擎驱动到这个图的运行，当发生异常的时候状态机触发回滚，逐个执行补偿服务。当然在什么情况下触发回滚用户是可以自定义决定的。该状态机可以实现服务编排的需求，它支持单项选择、并发、异步、子状态机调用、参数转换、参数映射、服务执行状态判断、异常捕获等功能。</p>
+<p>目前 Saga 的实现一般有两种，一种是通过事件驱动架构实现，一种是基于注解加拦截器拦截业务的正向服务实现。Seata 目前是采用事件驱动的机制来实现 的，Seata 实现了一个状态机，可以编排服务的调用流程及正向服务的补偿服务，生成一个 json 文件定义的状态图，状态机引擎驱动到这个图的运行，当发生异常的时候状态机触发回滚，逐个执行补偿服务。当然在什么情况下触发回滚用户是可以自定义决定的。该状态机可以实现服务编排的需求，它支持单项选择、并发、异步、子状态机调用、参数转换、参数映射、服务执行状态判断、异常捕获等功能。</p>
 <p><strong>3 状态机引擎原理</strong><br></p>
 <p><img decoding="async" loading="lazy" alt="16_45_32__08_13_2019.jpg" src="/zh-cn/assets/images/23-1d09ccedb0eb9f45ddda46963f6a9f12.png" width="1240" height="647" class="img_ev3q"></p>
 <p>该状态机引擎的基本原理是，它基于事件驱动架构，每个步骤都是异步执行的，步骤与步骤之间通过事件队列流转，<br>极大的提高系统吞吐量。每个步骤执行时会记录事务日志，用于出现异常时回滚时使用，事务日志会记录在与业务表所在的数据库内，提高性能。</p>
 <p><strong>4 状态机引擎设计</strong></p>
 <p><img decoding="async" loading="lazy" alt="16_45_46__08_13_2019.jpg" src="/zh-cn/assets/images/24-15fdd730a55833c61ceb860ada0f871b.jpeg" width="746" height="411" class="img_ev3q"></p>
-<p>该状态机引擎分成了三层架构的设计，最底层是“事件驱动”层，实现了 EventBus 和消费事件的线程池，是一个 Pub-Sub 的架构。第二层是“流程控制器”层，它实现了一个极简的流程引擎框架，它驱动一个“空”的流程执行，“空”的意思是指它不关心流程节点做什么事情，它只执行每个节点的 process 方法，然后执行 route 方法流转到下一个节点。这是一个通用框架，基于这两层，开发者可以实现任何流程引擎。最上层是“状态机引擎”层，它实现了每种状态节点的“行为”及“路由”逻辑代码，提  供 API 和状态图仓库，同时还有一些其它组件，比如表达式语言、逻辑计算器、流水生成器、拦截器、配置管理、事务日志记录等。</p>
+<p>该状态机引擎分成了三层架构的设计，最底层是“事件驱动”层，实现了 EventBus 和消费事件的线程池，是一个 Pub-Sub 的架构。第二层是“流程控制器”层，它实现了一个极简的流程引擎框架，它驱动一个“空”的流程执行，“空”的意思是指它不关心流程节点做什么事情，它只执行每个节点的 process 方法，然后执行 route 方法流转到下一个节点。这是一个通用框架，基于这两层，开发者可以实现任何流程引擎。最上层是“状态机引擎”层，它实现了每种状态节点的“行为”及“路由”逻辑代码，提供 API 和状态图仓库，同时还有一些其它组件，比如表达式语言、逻辑计算器、流水生成器、拦截器、配置管理、事务日志记录等。</p>
 <p><strong>5 Saga 服务设计经验</strong></p>
 <p>和TCC类似，Saga的正向服务与反向服务也需求遵循以下设计原则：</p>
 <p><strong>1）Saga 服务设计 - 允许空补偿</strong><br>**<br><img decoding="async" loading="lazy" alt="16_52_22__08_13_2019.jpg" src="/zh-cn/assets/images/25-2cae6395619166a3c23e698ac2306f8b.jpeg" width="746" height="415" class="img_ev3q"></p>
 <p><strong>2）Saga 服务设计 - 防悬挂控制</strong><br>**<br><img decoding="async" loading="lazy" alt="16_52_52__08_13_2019.jpg" src="/zh-cn/assets/images/26-ead26d36857d8ae91dbb16ff72873653.jpeg" width="746" height="417" class="img_ev3q"></p>
 <p><strong>3）Saga 服务设计 - 幂等控制</strong><br>**<br><img decoding="async" loading="lazy" alt="3 分布式事务 Seata 三种模式详解-屹远-31.jpg" src="/zh-cn/assets/images/27-11883ffbfbca7e56a3a5984f3e0c3fe6.jpeg" width="746" height="420" class="img_ev3q"></p>
 <p><strong>4）Saga 设计 - 自定义事务恢复策略</strong><br>**<br><img decoding="async" loading="lazy" alt="16_53_07__08_13_2019.jpg" src="/zh-cn/assets/images/28-73c6b9cfb082be166cb84a9381b81c0f.jpeg" width="746" height="414" class="img_ev3q"></p>
-<p>前面讲到 Saga 模式不保证事务的隔离性，在极端情况下可能出现脏写。比如在分布式事务未提交的情况下，前一个服务的数据被修改了，而后面的服务发生了异常需要进行回滚，可能由于前面服务的数据被修改后无法进行补偿操作。这时的一种处理办法可以是“重试”继续往前完成这个分布式事务。由于整个业务流程是由状态机编排的，即使是事后恢复也可以继续往前重试。所以用户可以根据业务特点配置该流程的事务处理策略是优先“回滚”还是“重试”，当事务超时的时候，Server 端会根据这个策  略不断进行重试。</p>
+<p>前面讲到 Saga 模式不保证事务的隔离性，在极端情况下可能出现脏写。比如在分布式事务未提交的情况下，前一个服务的数据被修改了，而后面的服务发生了异常需要进行回滚，可能由于前面服务的数据被修改后无法进行补偿操作。这时的一种处理办法可以是“重试”继续往前完成这个分布式事务。由于整个业务流程是由状态机编排的，即使是事后恢复也可以继续往前重试。所以用户可以根据业务特点配置该流程的事务处理策略是优先“回滚”还是“重试”，当事务超时的时候，Server 端会根据这个策略不断进 行重试。</p>
 <p>由于 Saga 不保证隔离性，所以我们在业务设计的时候需要做到“宁可长款，不可短款”的原则，长款是指在出现差错的时候站在我方的角度钱多了的情况，钱少了则是短款，因为如果长款可以给客户退款，而短款则可能钱追不回来了，也就是说在业务设计的时候，一定是先扣客户帐再入帐，如果因为隔离性问题造成覆盖更新，也不会出现钱少了的情况。</p>
 <p><strong>6 基于注解和拦截器的 Saga 实现</strong><br>**<br><img decoding="async" loading="lazy" alt="17_13_37__08_13_2019.jpg" src="/zh-cn/assets/images/29-3d3a00510ed54a37763e1558f7343789.jpeg" width="746" height="416" class="img_ev3q"></p>
 <p>还有一种 Saga 的实现是基于注解+拦截器的实现，Seata 目前没有实现，可以看上面的伪代码来理解一下，one 方法上定义了 @SagaCompensable 的注解，用于定义 one 方法的补偿方法是 compensateOne 方法。然后在业务流程代码 processA 方法上定义 @SagaTransactional 注解，启动 Saga 分布式事务，通过拦截器拦截每个正向方法当出现异常的时候触发回滚操作，调用正向方法的补偿方法。</p>
@@ -159,10 +159,10 @@
 <p><img decoding="async" loading="lazy" alt="17_13_49__08_13_2019.jpg" src="/zh-cn/assets/images/30-990cbb972417453d06119316c2c1bc7e.jpeg" width="746" height="415" class="img_ev3q"></p>
 <p>状态机引擎的最大优势是可以通过事件驱动的方法异步执行提高系统吞吐，可以实现服务编排需求，在 Saga 模式缺乏隔离性的情况下，可以多一种“向前重试”的事情恢复策略。注解加拦截器的的最大优势是，开发简单、学习成本低。</p>
 <a name="Gpkrf"></a>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="总结">总结<a href="#总结" class="hash-link" aria-label="总结的直接链接" title="总结的直接链接">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="总结">总结<a href="#总结" class="hash-link" aria-label="总结的直接链接" title="总 结的直接链接">​</a></h2>
 <p>本文先回顾了分布式事务产生的背景及理论基础，然后重点讲解了 Seata 分布式事务的原理以及三种模式（AT、TCC、Saga）的分布式事务实现。</p>
 <p>Seata 的定位是分布式事全场景解决方案，未来还会有 XA 模式的分布式事务实现，每种模式都有它的适用场景，AT 模式是无侵入的分布式事务解决方案，适用于不希望对业务进行改造的场景，几乎0学习成本。TCC 模式是高性能分布式事务解决方案，适用于核心系统等对性能有很高要求的场景。Saga 模式是长事务解决方案，适用于业务流程长且需要保证事务最终一致性的业务系统，Saga 模式一阶段就会提交本地事务，无锁，长流程情况下可以保证性能，多用于渠道层、集成层业务系统。事务参与者可能是其它公司的服务或者是遗留系统的服务，无法进行改造和提供 TCC 要求的接口，也可以使用 Saga 模式。</p>
-<p>本次分享的视频回顾以及PPT 查看地址：<a href="https://tech.antfin.com/community/activities/779/review" target="_blank" rel="noopener noreferrer">https://tech.antfin.com/community/activities/779/review</a></p></div><footer class="row docusaurus-mt-lg blogPostFooterDetailsFull_mRVl"><div class="col margin-top--sm"><a href="https://github.com/apache/incubator-seata-website/blob/docusaurus/i18n/zh-cn/docusaurus-plugin-content-blog/seata-at-tcc-saga.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>编辑此页</a></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="博文分页导航"><a class="pagination-nav__link pagination-nav__link--prev" href="/zh-cn/blog/design-more-flexable-application-by-saga"><div class="pagination-nav__sublabel">较新一篇</div><div class="pagination-nav__label">基于 Seata Saga 设计更有弹性的金融应用</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/zh-cn/blog/seata-at-mode-design"><div class="pagination-nav__sublabel">较旧一篇</div><div class="pagination-nav__label">分布式事务中间件 Seata 的设计原理</div></a></nav></main><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#一分布式事务产生的背景" class="table-of-contents__link toc-highlight">一、分布式事务产生的背景</a><ul><li><a href="#11-分布式架构演进之--数据库的水平拆分" class="table-of-contents__link toc-highlight">1.1 分布式架构演进之 - 数据库的水平拆分</a></li><li><a href="#12-分布式架构演进之--业务服务化拆分" class="table-of-contents__link toc-highlight">1.2 分布式架构演进之 - 业务服务化拆分</a></li></ul></li><li><a href="#二分布式事务理论基础" class="table-of-contents__link toc-highlight">二、分布式事务理论基础</a><ul><li><a href="#21两阶段提交协议" class="table-of-contents__link toc-highlight">2.1 两阶段提交协议</a></li><li><a href="#22tcc" class="table-of-contents__link toc-highlight">2.2 TCC</a></li><li><a href="#23-saga" class="table-of-contents__link toc-highlight">2.3 Saga</a></li></ul></li><li><a href="#三seata及其三种模式详解" class="table-of-contents__link toc-highlight">三、Seata 及其三种模式详解</a><ul><li><a href="#31-分布式事务-seata-介绍" class="table-of-contents__link toc-highlight">3.1 分布式事务 Seata 介绍</a></li><li><a href="#32-分布式事务-seata-产品模块" class="table-of-contents__link toc-highlight">3.2 分布式事务 Seata 产品模块</a></li><li><a href="#33-分布式事务-seata-解决方案" class="table-of-contents__link toc-highlight">3.3 分布式事务 Seata 解决方案</a></li></ul></li><li><a href="#总结" class="table-of-contents__link toc-highlight">总结</a></li></ul></div></div></div></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://incubator.apache.org/" target="_blank" rel="noopener noreferrer" class="footerLogoLink_BH7S"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></a></div><div class="footer__copyright">
+<p>本次分享的视频回顾以及PPT 查看地址：<a href="https://tech.antfin.com/community/activities/779/review" target="_blank" rel="noopener noreferrer">https://tech.antfin.com/community/activities/779/review</a></p></div><footer class="row docusaurus-mt-lg blogPostFooterDetailsFull_mRVl"><div class="col margin-top--sm"><a href="https://github.com/apache/incubator-seata-website/blob/docusaurus/i18n/zh-cn/docusaurus-plugin-content-blog/seata-at-tcc-saga.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>编辑此页</a></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="博文分页导航"><a class="pagination-nav__link pagination-nav__link--prev" href="/zh-cn/blog/design-more-flexable-application-by-saga"><div class="pagination-nav__sublabel">较新一篇</div><div class="pagination-nav__label">基于 Seata Saga 设计更有弹性的金融应用</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/zh-cn/blog/seata-at-mode-design"><div class="pagination-nav__sublabel">较旧一篇</div><div class="pagination-nav__label">分布式事务中间件 Seata 的设计原理</div></a></nav></main><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#一分布式事务产生的背景" class="table-of-contents__link toc-highlight">一、分布式事务产生的背景</a><ul><li><a href="#11-分布式架构演进之---数据库的水平拆分" class="table-of-contents__link toc-highlight">1.1 分布式架构演进之 - 数据库的水平拆分</a></li><li><a href="#12-分布式架构演进之---业务服务化拆分" class="table-of-contents__link toc-highlight">1.2 分布式架构演进之 - 业务服务化拆分</a></li></ul></li><li><a href="#二分布式事务理论基础" class="table-of-contents__link toc-highlight">二、分布式事务理论基础</a><ul><li><a href="#21-两阶段提交协议" class="table-of-contents__link toc-highlight">2.1 两阶段提交协议</a></li><li><a href="#22-tcc" class="table-of-contents__link toc-highlight">2.2 TCC</a></li><li><a href="#23-saga" class="table-of-contents__link toc-highlight">2.3 Saga</a></li></ul></li><li><a href="#三seata-及其三种模式详解" class="table-of-contents__link toc-highlight">三、Seata 及其三种模式详解</a><ul><li><a href="#31-分布式事务-seata-介绍" class="table-of-contents__link toc-highlight">3.1 分布式事务 Seata 介绍</a></li><li><a href="#32-分布式事务-seata-产品模块" class="table-of-contents__link toc-highlight">3.2 分布式事务 Seata 产品模块</a></li><li><a href="#33-分布式事务-seata-解决方案" class="table-of-contents__link toc-highlight">3.3 分布式事务 Seata 解决方案</a></li></ul></li><li><a href="#总结" class="table-of-contents__link toc-highlight">总结</a></li></ul></div></div></div></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://incubator.apache.org/" target="_blank" rel="noopener noreferrer" class="footerLogoLink_BH7S"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></a></div><div class="footer__copyright">
                   <div class="fs-12">
                     <div class="center-div">
                       <span>Apache Seata (incubating) is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</span>

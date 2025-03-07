@@ -11,7 +11,7 @@
 
 
 <meta name="aes-config" content="pid=xux-opensource&amp;user_type=101&amp;uid=&amp;username=&amp;dim10=seata"><link rel="stylesheet" href="/zh-cn/assets/css/styles.9644caf2.css">
-<script src="/zh-cn/assets/js/runtime~main.5e23cf19.js" defer="defer"></script>
+<script src="/zh-cn/assets/js/runtime~main.81fc36cb.js" defer="defer"></script>
 <script src="/zh-cn/assets/js/main.29bed568.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -59,7 +59,7 @@
 <a name="e02f3ee9"></a>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="4防悬挂控制">4、防悬挂控制<a href="#4防悬挂控制" class="hash-link" aria-label="4、防悬挂控制的直接链接" title="4、防悬挂控制的直接链接">​</a></h4>
 <p>如下图所示，事务协调器在调用 TCC 服务的一阶段 Try 操作时，可能会出现因网络拥堵而导致的超时，此时事务管理器会触发二阶段回滚，调用 TCC 服务的 Cancel 操作，Cancel 调用未超时；在此之后，拥堵在网络上的一阶段 Try 数据包被 TCC 服务收到，出现了二阶段 Cancel 请求比一阶段 Try 请求先执行的情况，此 TCC 服务在执行晚到的 Try 之后，将永远不会再收到二阶段的 Confirm 或者 Cancel ，造成 TCC 服务悬挂。</p>
-<p>用户在实现  TCC 服务时，要允许空回滚，但是要拒绝执行空回滚之后 Try 请求，要避免出现悬挂。</p>
+<p>用户在实现  TCC 服务时，要允许空回滚，但是要拒绝执行空回滚之后 Try 请求，要避免出现悬挂。</p>
 <p><img decoding="async" loading="lazy" alt="image.png" src="/zh-cn/assets/images/susp-3a5ed6577950c1034caca1d822a7aa80.png" width="1438" height="842" class="img_ev3q"></p>
 <a name="5322a3d5"></a>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="5幂等控制">5、幂等控制<a href="#5幂等控制" class="hash-link" aria-label="5、幂等控制的直接链接" title="5、幂等控制的直接链接">​</a></h4>

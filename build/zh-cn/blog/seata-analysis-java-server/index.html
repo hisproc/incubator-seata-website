@@ -11,7 +11,7 @@
 
 
 <meta name="aes-config" content="pid=xux-opensource&amp;user_type=101&amp;uid=&amp;username=&amp;dim10=seata"><link rel="stylesheet" href="/zh-cn/assets/css/styles.9644caf2.css">
-<script src="/zh-cn/assets/js/runtime~main.5e23cf19.js" defer="defer"></script>
+<script src="/zh-cn/assets/js/runtime~main.81fc36cb.js" defer="defer"></script>
 <script src="/zh-cn/assets/js/main.29bed568.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -88,13 +88,13 @@
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="24-store">2.4 Store<a href="#24-store" class="hash-link" aria-label="2.4 Store的直接链接" title="2.4 Store的直接链接">​</a></h2>
 <p>存储层的实现对于 Seata 是否高性能，是否可靠非常关键。
 如果存储层没有实现好，那么如果发生宕机，在 TC 中正在进行分布式事务处理的数据将会被丢失，既然使用了分布式事务，那么其肯定不能容忍丢失。如果存储层实现好了，但是其性能有很大问题，RM 可能会发生频繁回滚那么其完全无法应对高并发的场景。</p>
-<p>在 Seata 中默认提供了文件方式的存储，下面我们定义我们存储的数据为 Session，而我们的 TM 创造的全局事务操作数据叫 GloabSession，RM 创造的分支事务操作数据叫 BranchSession，一个 GloabSession 可以拥有多个 BranchSession。我们的目的就是要将这么多 Session 存储下来。</p>
+<p>在 Seata 中默认提供了文件方式的存储，下面我们定义我们存储的数据为 Session，而我们的 TM 创造的全局事务操作数据叫 GlobalSession，RM 创造的分支事务操作数据叫 BranchSession，一个 GlobalSession 可以拥有多个 BranchSession。我们的目的就是要将这么多 Session 存储下来。</p>
 <p>在 FileTransactionStoreManager#writeSession 代码中:</p>
 <p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/store-11995c04c2ae5a0b14ce70fe74837dbf.png" width="876" height="258" class="img_ev3q"></p>
 <p>上面的代码主要分为下面几步：</p>
 <ul>
 <li>step1：生成一个 TransactionWriteFuture。</li>
-<li>step2：将这个 futureRequest 丢进一个 LinkedBlockingQueue 中。为什么需要将所有数据都丢进队列中呢？当然这里其实也可以用锁来实现，再另外一个阿里开源的 RocketMQ 中，使用的锁。不论是队列还是锁它们的目的是为了保证单线程写，这又是为什么呢？有人会解释说，需要保证顺序写，这样速度就很快，这个理解是错误的，我们的 FileChannel 的写方法是线程安全的，已经能保证顺序写了。保证单线程写其实是为了让我们这个写逻辑都是单线程的，因为可能有些文件写满或  者记录写数据位置等等逻辑，当然这些逻辑都可以主动加锁去做，但是为了实现简单方便，直接再整个写逻辑排队处理是最为合适的。</li>
+<li>step2：将这个 futureRequest 丢进一个 LinkedBlockingQueue 中。为什么需要将所有数据都丢进队列中呢？当然这里其实也可以用锁来实现，再另外一个阿里开源的 RocketMQ 中，使用的锁。不论是队列还是锁它们的目的是为了保证单线程写，这又是为什么呢？有人会解释说，需要保证顺序写，这样速度就很快，这个理解是错误的，我们的 FileChannel 的写方法是线程安全的，已经能保证顺序写了。保证单线程写其实是为了让我们这个写逻辑都是单线程的，因为可能有些文件写满或者记录写数据位置等等逻辑，当然这些逻辑都可以主动加锁去做，但是为了实现简单方便，直接再整个写逻辑排队处理是最为合适的。</li>
 <li>step3：调用 future.get，等待我们该条数据写逻辑完成通知。</li>
 </ul>
 <p>我们将数据提交到队列之后，我们接下来需要对其进行消费，代码如下：</p>
@@ -145,17 +145,17 @@
 <p>在 Sever 端对于写没有设置最大空闲时间，对于读设置了最大空闲时间，默认为 15s(客户端默认写空闲为 5s，发送 ping 消息)，如果超过 15s 则会将链接断开，关闭资源。</p>
 <p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/userEventTriggered-dde1066ce734ef88b3a6acc562e70f9c.png" width="656" height="326" class="img_ev3q"></p>
 <p>step1：判断是否是读空闲的检测事件。</p>
-<p>step2：如果是则断开链接，关闭资源。<br>
-<!-- -->另外 Seata 做了内存池、客户端做了批量小包合并发送、Netty 连接池（减少连接创建时的服务不可用时间）等功能，以下为批量小包合并功能。</p>
+<p>step2：如果是则断开链接，关闭资源。
+另外 Seata 做了内存池、客户端做了批量小包合并发送、Netty 连接池（减少连接创建时的服务不可用时间）等功能，以下为批量小包合并功能。</p>
 <p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/send-166e53dadab35ea5272470c6056d27c1.png" width="1472" height="1572" class="img_ev3q"></p>
 <p>客户端的消息发送并不是真正的消息发送通过 AbstractRpcRemoting#sendAsyncRequest 包装成 RpcMessage 存储至 basket 中并唤醒合并发送线程。合并发送线程通过 while true 的形式
-最长等待 1ms 对 basket 的消息取出包装成 merge 消息进行真正发送，此时若 channel 出现异常则会通过 fail-fast 快速失败返回结果。merge 消息发送前在 map 中标识，收到结果后批量确认（AbstractRpcRemotingClient#channelRead），并通过 dispatch 分发至 messageListener 和 handler 去处理。同时，timerExecutor 定时对已发送消息进行超时检测，若超时置为失败。具体消息协议设计将会在后续的文章中给出，敬请关注。<br>
-<!-- -->Seata 的 Netty Client 由 TMClient 和 RMClient 组成，根据事务角色功能区分，都继承 AbstractRpcRemotingClient，AbstractRpcRemotingClient 实现了 RemotingService（服务启停）, RegisterMsgListener（netty 连接池连接创建回调）和 ClientMessageSender（消息发送）继承了 AbstractRpcRemoting（ Client 和 Server 顶层消息发送和处理的模板）。<br>
-<!-- -->RMClient 类关系图如下图所示：
-<img decoding="async" loading="lazy" src="/zh-cn/assets/images/class-e9d7be588754b2b5a08756e05dc79ea1.png" width="1626" height="838" class="img_ev3q">
-TMClient 和 RMClient 又会根据自身的 poolConfig 配置与 NettyPoolableFactory implements KeyedPoolableObjectFactory&lt;NettyPoolKey, Channel&gt; 进行 channel 连接的交互，channel 连接池根据角色 key+ip 作为连接池的 key 来定位各个连接池
+最长等待 1ms 对 basket 的消息取出包装成 merge 消息进行真正发送，此时若 channel 出现异常则会通过 fail-fast 快速失败返回结果。merge 消息发送前在 map 中标识，收到结果后批量确认（AbstractRpcRemotingClient#channelRead），并通过 dispatch 分发至 messageListener 和 handler 去处理。同时，timerExecutor 定时对已发送消息进行超时检测，若超时置为失败。具体消息协议设计将会在后续的文章中给出，敬请关注。
+Seata 的 Netty Client 由 TMClient 和 RMClient 组成，根据事务角色功能区分，都继承 AbstractRpcRemotingClient，AbstractRpcRemotingClient 实现了 RemotingService（服务启停）, RegisterMsgListener（netty 连接池连接创建回调）和 ClientMessageSender（消息发送）继承了 AbstractRpcRemoting（ Client 和 Server 顶层消息发送和处理的模板）。</p>
+<p>RMClient 类关系图如下图所示：</p>
+<p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/class-e9d7be588754b2b5a08756e05dc79ea1.png" width="1626" height="838" class="img_ev3q"></p>
+<p>TMClient 和 RMClient 又会根据自身的 poolConfig 配置与 NettyPoolableFactory implements KeyedPoolableObjectFactory&lt;NettyPoolKey, Channel&gt; 进行 channel 连接的交互，channel 连接池根据角色 key+ip 作为连接池的 key 来定位各个连接池
 ，连接池对 channel 进行统一的管理。TMClient 和 RMClient 在发送过程中对于每个 ip 只会使用一个长连接，但连接不可用时，会从连接池中快速取出已经创建好并可用的连接，减少服务的不可用时间。</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="27-ha-cluster">2.7 HA-Cluster<a href="#27-ha-cluster" class="hash-link" aria-label="2.7 HA-Cluster的直接链接" title="2.7 HA-Cluster的直接链接">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="27-ha-cluster">2.7 HA-Cluster<a href="#27-ha-cluster" class="hash-link" aria-label="2.7 HA-Cluster的  直接链接" title="2.7 HA-Cluster的直接链接">​</a></h2>
 <p>目前官方没有公布 HA-Cluster,但是通过一些其它中间件和官方的一些透露，可以将 HA-Cluster 用如下方式设计:
 <img decoding="async" loading="lazy" src="/zh-cn/assets/images/hacluster-3b88f79394b7ffe7c02f3b249fae582f.png" width="1085" height="622" class="img_ev3q"></p>
 <p>具体的流程如下:</p>
@@ -183,9 +183,9 @@ TMClient 和 RMClient 又会根据自身的 poolConfig 配置与 NettyPoolableFa
 <p>step6：将本地 IP 和监听端口设置到 XID 中，初始化 rpcServer 等待客户端的连接。</p>
 <p>启动流程比较简单，下面我会介绍分布式事务框架中的常见的一些业务逻辑 Seata 是如何处理的。</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="32-begin-开启全局事务">3.2 Begin-开启全局事务<a href="#32-begin-开启全局事务" class="hash-link" aria-label="3.2 Begin-开启全局事务的直接链接" title="3.2 Begin-开启全局事务的直接链接">​</a></h2>
-<p>一次分布式事务的起始点一定是开启全局事务，首先我们看看  全局事务 Seata 是如何实现的：</p>
+<p>一次分布式事务的起始点一定是开启全局事务，首先我们看看全局事务 Seata 是如何实现的：</p>
 <p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/begin-074ada9f769abc9a5011ce878814e570.png" width="894" height="211" class="img_ev3q"></p>
-<p>step1： 根据应用 ID，事务分组，名字，超时时间创建一个 GloabSession，这个在前面也提到过它和 branchSession 分别是什么。</p>
+<p>step1： 根据应用 ID，事务分组，名字，超时时间创建一个 GlobalSession，这个在前面也提到过它和 branchSession 分别是什么。</p>
 <p>step2：对其添加一个 RootSessionManager 用于监听一些事件，这里要说一下目前在 Seata 里面有四种类型的 Listener(这里要说明的是所有的 sessionManager 都实现了 SessionLifecycleListener)：</p>
 <ul>
 <li>ROOT_SESSION_MANAGER：最全，最大的，拥有所有的 Session。</li>
@@ -199,7 +199,7 @@ TMClient 和 RMClient 又会根据自身的 poolConfig 配置与 NettyPoolableFa
 <p>这一步会把状态变为 Begin,记录开始时间,并且调用 RootSessionManager 的 onBegin 监听方法，将 Session 保存到 map 并写入到我们的文件。</p>
 <p>step4：最后返回 XID，这个 XID 是由 ip+port+transactionId 组成的，非常重要，当 TM 申请到之后需要将这个 ID 传到 RM 中，RM 通过 XID 来决定到底应该访问哪一台 Server。</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="33-branchregister-分支事务注册">3.3 BranchRegister-分支事务注册<a href="#33-branchregister-分支事务注册" class="hash-link" aria-label="3.3 BranchRegister-分支事务注册的直接链接" title="3.3 BranchRegister-分支事务注册的直接链接">​</a></h2>
-<p>当我们全局事务在 TM 开启之后，我们 RM 的分支事务也需要注册到我们的全局事务之上，这里看看是如何处理的：</p>
+<p>当我们全局事务在 TM 开启之后，我们 RM 的分支事  务也需要注册到我们的全局事务之上，这里看看是如何处理的：</p>
 <p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/branchRegister-fb53633441af1f3dab28ea6ad31ef84d.png" width="878" height="376" class="img_ev3q"></p>
 <p>step1：通过 transactionId 获取并校验全局事务是否是开启状态。</p>
 <p>step2：创建一个新的分支事务，也就是我们的 BranchSession。</p>
@@ -211,7 +211,7 @@ TMClient 和 RMClient 又会根据自身的 poolConfig 配置与 NettyPoolableFa
 <p>当我们分支事务执行完成之后，就轮到我们的 TM-事务管理器来决定是提交还是回滚，如果是提交，那么就会走到下面的逻辑:</p>
 <p><img decoding="async" loading="lazy" src="/zh-cn/assets/images/commit-2583aeb4369e3f50d4deeeef29fa65a0.png" width="890" height="397" class="img_ev3q"></p>
 <p>step1：首先找到我们的 globalSession。如果它为 null 证明已经被 commit 过了，那么直接幂等操作，返回成功。</p>
-<p>step2：关闭我们  的 GloabSession 防止再次有新的 branch 进来(跨服务调用超时回滚，provider 在继续执行)。</p>
+<p>step2：关闭我们的 GlobalSession 防止再次有新的 branch 进来(跨服务调用超时回滚，provider 在继续执行)。</p>
 <p>step3：如果 status 是等于 Begin，那么久证明还没有提交过，改变其状态为 Committing 也就是正在提交。</p>
 <p>step4：判断是否是可以异步提交，目前只有 AT 模式可以异步提交，二阶段全局提交时只是删除 undolog 并无严格顺序，此处使用定时任务，客户端收到后批量合并删除。</p>
 <p>step5：如果是异步提交，直接将其放进我们 ASYNC_COMMITTING_SESSION_MANAGER，让其再后台线程异步去做我们的 step6，如果是同步的那么直接执行我们的 step6。</p>
@@ -224,15 +224,15 @@ TMClient 和 RMClient 又会根据自身的 poolConfig 配置与 NettyPoolableFa
 <p>最后在总结一下开始我们提出了分布式事务的关键 4 点，Seata 到底是怎么解决的：</p>
 <ul>
 <li>正确的协调：通过后台定时任务各种正确的重试，并且未来会推出监控平台有可能可以手动回滚。</li>
-<li>高可用: 通过 HA-Cluster 保证高可用。</li>
+<li>高可用: 通过 HA-Cluster 保  证高可用。</li>
 <li>高性能：文件顺序写，RPC 通过 netty 实现，Seata 未来可以水平扩展，提高处理性能。</li>
 <li>高扩展性：提供给用户可以自由实现的地方，比如配置，服务发现和注册，全局锁等等。</li>
 </ul>
 <p>最后希望大家能从这篇文章能了解 Seata-Server 的核心设计原理，当然你也可以想象如果你自己去实现一个分布式事务的 Server 应该怎样去设计？</p>
 <p>Seata GitHub 地址：<a href="https://github.com/apache/incubator-seata" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-seata</a></p>
 <p>本文作者：</p>
-<p>李钊，GitHub ID @CoffeeLatte007，公众号「咖啡拿铁」作者，Seata 社区 Committer，猿辅导 Java 工程师，曾就职于美团。对分布式中间件，分布式系统有浓厚的兴趣。<br>
-<!-- -->季敏(清铭)，GitHub ID @slievrly，Seata 开源项目负责人，阿里巴巴中间件 TXC/GTS 核心研发成员，长期从事于分布式中间件核心研发工作，在分布式事务领域有着较丰富的技术积累。</p></div><footer class="row docusaurus-mt-lg blogPostFooterDetailsFull_mRVl"><div class="col margin-top--sm"><a href="https://github.com/apache/incubator-seata-website/blob/docusaurus/i18n/zh-cn/docusaurus-plugin-content-blog/seata-analysis-java-server.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>编辑此页</a></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="博文分页导航"><a class="pagination-nav__link pagination-nav__link--prev" href="/zh-cn/blog/seata-analysis-java-client"><div class="pagination-nav__sublabel">较新一篇</div><div class="pagination-nav__label">分布式事务之Seata-Client原理及流程详解</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/zh-cn/blog/tcc-mode-applicable-scenario-analysis"><div class="pagination-nav__sublabel">较旧一篇</div><div class="pagination-nav__label">TCC适用模型与适用场景分析</div></a></nav></main><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#21-seata-server-的设计" class="table-of-contents__link toc-highlight">2.1 Seata-Server 的设计</a></li><li><a href="#22-discovery" class="table-of-contents__link toc-highlight">2.2 Discovery</a></li><li><a href="#23-config" class="table-of-contents__link toc-highlight">2.3 Config</a></li><li><a href="#24-store" class="table-of-contents__link toc-highlight">2.4 Store</a></li><li><a href="#25-lock" class="table-of-contents__link toc-highlight">2.5 Lock</a></li><li><a href="#26-rpc" class="table-of-contents__link toc-highlight">2.6 RPC</a></li><li><a href="#27-ha-cluster" class="table-of-contents__link toc-highlight">2.7 HA-Cluster</a></li><li><a href="#28-metrics" class="table-of-contents__link toc-highlight">2.8 Metrics</a></li><li><a href="#31-启动流程" class="table-of-contents__link toc-highlight">3.1 启动流程</a></li><li><a href="#32-begin-开启全局事务" class="table-of-contents__link toc-highlight">3.2 Begin-开启全局事务</a></li><li><a href="#33-branchregister-分支事务注册" class="table-of-contents__link toc-highlight">3.3 BranchRegister-分支事务注册</a></li><li><a href="#34-globalcommit---全局提交" class="table-of-contents__link toc-highlight">3.4 GlobalCommit - 全局提交</a></li><li><a href="#35-globalrollback---全局回滚" class="table-of-contents__link toc-highlight">3.5 GlobalRollback - 全局回滚</a></li></ul></div></div></div></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://incubator.apache.org/" target="_blank" rel="noopener noreferrer" class="footerLogoLink_BH7S"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></a></div><div class="footer__copyright">
+<p>李钊，GitHub ID @CoffeeLatte007，公众号「咖啡拿铁」作者，Seata 社区 Committer，猿辅导 Java 工程师，曾就职于美团。对分布式中间件，分布式系统有浓厚的兴趣。
+季敏(清铭)，GitHub ID @slievrly，Seata 开源项目负责人，阿里巴巴中间件 TXC/GTS 核心研发成员，长期从事于分布式中间件核心研发工作，在分布式事务领域有着较丰富的技术积累。</p></div><footer class="row docusaurus-mt-lg blogPostFooterDetailsFull_mRVl"><div class="col margin-top--sm"><a href="https://github.com/apache/incubator-seata-website/blob/docusaurus/i18n/zh-cn/docusaurus-plugin-content-blog/seata-analysis-java-server.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>编辑此页</a></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="博文分页导航"><a class="pagination-nav__link pagination-nav__link--prev" href="/zh-cn/blog/seata-analysis-java-client"><div class="pagination-nav__sublabel">较新一篇</div><div class="pagination-nav__label">分布式事务之Seata-Client原理及流程详解</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/zh-cn/blog/tcc-mode-applicable-scenario-analysis"><div class="pagination-nav__sublabel">较旧一篇</div><div class="pagination-nav__label">TCC适用模型与适用场景分析</div></a></nav></main><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#21-seata-server-的设计" class="table-of-contents__link toc-highlight">2.1 Seata-Server 的设计</a></li><li><a href="#22-discovery" class="table-of-contents__link toc-highlight">2.2 Discovery</a></li><li><a href="#23-config" class="table-of-contents__link toc-highlight">2.3 Config</a></li><li><a href="#24-store" class="table-of-contents__link toc-highlight">2.4 Store</a></li><li><a href="#25-lock" class="table-of-contents__link toc-highlight">2.5 Lock</a></li><li><a href="#26-rpc" class="table-of-contents__link toc-highlight">2.6 RPC</a></li><li><a href="#27-ha-cluster" class="table-of-contents__link toc-highlight">2.7 HA-Cluster</a></li><li><a href="#28-metrics" class="table-of-contents__link toc-highlight">2.8 Metrics</a></li><li><a href="#31-启动流程" class="table-of-contents__link toc-highlight">3.1 启动流程</a></li><li><a href="#32-begin-开启全局事务" class="table-of-contents__link toc-highlight">3.2 Begin-开启全局事务</a></li><li><a href="#33-branchregister-分支事务注册" class="table-of-contents__link toc-highlight">3.3 BranchRegister-分支事务注册</a></li><li><a href="#34-globalcommit---全局提交" class="table-of-contents__link toc-highlight">3.4 GlobalCommit - 全局提交</a></li><li><a href="#35-globalrollback---全局回滚" class="table-of-contents__link toc-highlight">3.5 GlobalRollback - 全局回滚</a></li></ul></div></div></div></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://incubator.apache.org/" target="_blank" rel="noopener noreferrer" class="footerLogoLink_BH7S"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="/zh-cn/img/apache/incubator.svg" alt="Apache Incubator Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></a></div><div class="footer__copyright">
                   <div class="fs-12">
                     <div class="center-div">
                       <span>Apache Seata (incubating) is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</span>
