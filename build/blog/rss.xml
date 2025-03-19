@@ -4,7 +4,7 @@
         <title>Apache Seata Blog</title>
         <link>https://seata.apache.org/blog</link>
         <description>Apache Seata Blog</description>
-        <lastBuildDate>Mon, 17 Mar 2025 15:34:29 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 19 Mar 2025 02:22:28 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[seata-namingserver]]></title>
             <link>https://seata.apache.org/blog/seata-namingserver</link>
             <guid>https://seata.apache.org/blog/seata-namingserver</guid>
-            <pubDate>Mon, 17 Mar 2025 15:34:29 GMT</pubDate>
+            <pubDate>Wed, 19 Mar 2025 02:22:28 GMT</pubDate>
             <description><![CDATA[Placeholder. DO NOT DELETE.]]></description>
             <content:encoded><![CDATA[<p>Placeholder. DO NOT DELETE.</p>]]></content:encoded>
         </item>
@@ -1102,7 +1102,7 @@ The above figure shows the workflow of the metrics module, which works as follow
 <li>Transaction link for GlobalCommit success (example)</li>
 </ul>
 <p><img decoding="async" loading="lazy" alt="image.png" src="https://seata.apache.org/assets/images/metrics-tracing%E6%95%88%E6%9E%9C-tracing%E9%93%BE1-e4e8b13e4b0a74c76631560a66973d2a.png" width="1080" height="1788" class="img_ev3q">
-<img decoding="async" loading="lazy" alt="image.png" src="https://seata.apache.org/assets/images/metrics-tracing%E6%95%88%E6%9E%9C-tracing%EF%BF%BD%E9%93%BE2-d5a816ec8b49b6ca95309eeda8470825.png" width="1080" height="2647" class="img_ev3q">
+<img decoding="async" loading="lazy" alt="image.png" src="https://seata.apache.org/assets/images/metrics-tracing%E6%95%88%E6%9E%9C-tracing%E9%93%BE2-d5a816ec8b49b6ca95309eeda8470825.png" width="1080" height="2647" class="img_ev3q">
 <img decoding="async" loading="lazy" alt="image.png" src="https://seata.apache.org/assets/images/metrics-tracing%E6%95%88%E6%9E%9C-tracing%E9%93%BE3-c50deab1728f8e61946a26d7d1b49da8.png" width="1080" height="1466" class="img_ev3q"></p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="logging-dimension">Logging dimension<a href="https://seata.apache.org/blog/seata-observable-practice#logging-dimension" class="hash-link" aria-label="Direct link to Logging dimension" title="Direct link to Logging dimension">​</a></h3>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="design-ideas-1">Design Ideas<a href="https://seata.apache.org/blog/seata-observable-practice#design-ideas-1" class="hash-link" aria-label="Direct link to Design Ideas" title="Direct link to Design Ideas">​</a></h4>
