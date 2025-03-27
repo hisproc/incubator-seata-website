@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://seata.apache.org/blog</id>
     <title>Apache Seata Blog</title>
-    <updated>2025-03-26T05:18:57.000Z</updated>
+    <updated>2025-03-27T09:20:18.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://seata.apache.org/blog"/>
     <subtitle>Apache Seata Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[seata-namingserver]]></title>
         <id>https://seata.apache.org/blog/seata-namingserver</id>
         <link href="https://seata.apache.org/blog/seata-namingserver"/>
-        <updated>2025-03-26T05:18:57.000Z</updated>
+        <updated>2025-03-27T09:20:18.000Z</updated>
         <summary type="html"><![CDATA[Placeholder. DO NOT DELETE.]]></summary>
         <content type="html"><![CDATA[<p>Placeholder. DO NOT DELETE.</p>]]></content>
     </entry>
@@ -866,17 +866,17 @@ With this, the changes on the client side are complete.</p>
 </li>
 </ul>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="41-171-db-mode">4.1 1.7.1 db mode<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#41-171-db-mode" class="hash-link" aria-label="Direct link to 4.1 1.7.1 db mode" title="Direct link to 4.1 1.7.1 db mode">​</a></h3>
-<p><img decoding="async" loading="lazy" src="https://img.alicdn.com/imgextra/i3/O1CN011dNh3H1UK8G5prQAg_!!6000000002498-0-tps-731-333.jpg" alt="raft pressure test model" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="raft pressure test model" src="https://seata.apache.org/assets/images/O1CN011dNh3H1UK8G5prQAg_6000000002498-0-tps-731-333-8664d89320cc399d3b1cc79bd0737b97.jpg" width="731" height="333" class="img_ev3q"></p>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="empty-submission-64c">Empty submission 64C<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#empty-submission-64c" class="hash-link" aria-label="Direct link to Empty submission 64C" title="Direct link to Empty submission 64C">​</a></h4>
-<p><img decoding="async" loading="lazy" src="https://img.alicdn.com/imgextra/i2/O1CN01pE1Anf1nRtgcnlx9t_!!6000000005087-0-tps-622-852.jpg" alt="db64-2" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="db64-2" src="https://seata.apache.org/assets/images/O1CN01pE1Anf1nRtgcnlx9t_6000000005087-0-tps-622-852-08886ab42c451b32a1dcdae11988364d.jpg" width="622" height="852" class="img_ev3q"></p>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="random-inventory-deduction-32c">Random inventory deduction 32C<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#random-inventory-deduction-32c" class="hash-link" aria-label="Direct link to Random inventory deduction 32C" title="Direct link to Random inventory deduction 32C">​</a></h4>
-<p><img decoding="async" loading="lazy" src="https://img.alicdn.com/imgextra/i2/O1CN016hZkJC20OJax9ce31_!!6000000006839-0-tps-624-852.jpg" alt="db32-2" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="db32-2" src="https://seata.apache.org/assets/images/O1CN016hZkJC20OJax9ce31_6000000006839-0-tps-624-852-33cbbfba770899ce6e2551ceae56ceca.jpg" width="624" height="852" class="img_ev3q"></p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="42-20-raft-mode">4.2 2.0 raft mode<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#42-20-raft-mode" class="hash-link" aria-label="Direct link to 4.2 2.0 raft mode" title="Direct link to 4.2 2.0 raft mode">​</a></h3>
-<p><img decoding="async" loading="lazy" src="https://img.alicdn.com/imgextra/i2/O1CN01nNL6oe1X95YcQQEjs_!!6000000002880-0-tps-773-353.jpg" alt="raft pressure test model" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="raft pressure test model" src="https://seata.apache.org/assets/images/O1CN01nNL6oe1X95YcQQEjs_6000000002880-0-tps-773-353-1dd6166d24062d1d64ce8d0ea895fd7e.jpg" width="773" height="353" class="img_ev3q"></p>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="empty-submission-64c-1">Empty submission 64C<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#empty-submission-64c-1" class="hash-link" aria-label="Direct link to Empty submission 64C" title="Direct link to Empty submission 64C">​</a></h4>
-<p><img decoding="async" loading="lazy" src="https://img.alicdn.com/imgextra/i1/O1CN01rs1ykr1dhnH8qnXj3_!!6000000003768-0-tps-631-851.jpg" alt="raft64-2" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="raft64-2" src="https://seata.apache.org/assets/images/O1CN01rs1ykr1dhnH8qnXj3_6000000003768-0-tps-631-851-6fa4575550e4323c696a1661bc9bc191.jpg" width="631" height="851" class="img_ev3q"></p>
 <h4 class="anchor anchorWithStickyNavbar_LWe7" id="random-inventory-deduction-32c-1">Random inventory deduction 32C<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#random-inventory-deduction-32c-1" class="hash-link" aria-label="Direct link to Random inventory deduction 32C" title="Direct link to Random inventory deduction 32C">​</a></h4>
-<p><img decoding="async" loading="lazy" src="https://img.alicdn.com/imgextra/i4/O1CN015OwA2k20enquV7Yfu_!!6000000006875-0-tps-624-856.jpg" alt="raft32c-2" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="raft32c-2" src="https://seata.apache.org/assets/images/O1CN015OwA2k20enquV7Yfu_6000000006875-0-tps-624-856-f1ee757ac7bd4934445c758127236b23.jpg" width="624" height="856" class="img_ev3q"></p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="43-test-result-comparison">4.3 Test Result Comparison<a href="https://seata.apache.org/blog/seata-raft-detailed-explanation#43-test-result-comparison" class="hash-link" aria-label="Direct link to 4.3 Test Result Comparison" title="Direct link to 4.3 Test Result Comparison">​</a></h3>
 <p>32 concurrent random inventory deduction scenario with 3 million items</p>
 <table><thead><tr><th>tps avg</th><th>tps max</th><th>count</th><th>rt</th><th>error</th><th>Storage Type</th></tr></thead><tbody><tr><td>1709 (42%↑)</td><td>2019 (21%↑)</td><td>1228803 (42%↑)</td><td>13.86ms (30%↓)</td><td>0</td><td>Raft</td></tr><tr><td>1201</td><td>1668</td><td>864105</td><td>19.86ms</td><td>0</td><td>DB</td></tr></tbody></table>
