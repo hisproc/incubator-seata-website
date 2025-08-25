@@ -11,7 +11,7 @@
 
 
 <meta name="aes-config" content="pid=xux-opensource&amp;user_type=101&amp;uid=&amp;username=&amp;dim10=seata"><link rel="stylesheet" href="/zh-cn/assets/css/styles.79e6d723.css">
-<script src="/zh-cn/assets/js/runtime~main.af9fe9de.js" defer="defer"></script>
+<script src="/zh-cn/assets/js/runtime~main.7d5e68f3.js" defer="defer"></script>
 <script src="/zh-cn/assets/js/main.dc442b14.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -47,17 +47,18 @@ mac或linux运行</p>
 <p>将会得到如下响应，请复制其中的data放入后续的<code>authorization</code>请求头中</p>
 <div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;code&quot;: &quot;200&quot;,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;message&quot;: &quot;success&quot;,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;data&quot;: &quot;Bearer xxxxxxxxxx&quot;,</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;success&quot;: true</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="创建client端的事务分组-seata集群的映射关系">创建client端的事务分组-&gt;seata集群的映射关系<a href="#创建client端的事务分组-seata集群的映射关系" class="hash-link" aria-label="创建client端的事务分组-&gt;seata集群的映射关系的直接链接" title="创建client端的事务分组-&gt;seata集群的映射关系的直接链接">​</a></h3>
-<p>向一个namingserver节点发起创建事务分组映射关系的http请求（namingserver节点会自动同步给其它节点）</p>
+<p>先启动namingserver,随后,启动 Seata-Server
+向一个namingserver节点发起创建事务分组映射关系的http请求（namingserver节点会自动同步给其它节点）</p>
 <div class="language-shell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-shell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -X POST -H &quot;authorization: Bearer xxxxxxx&quot; http://127.0.0.1:8081/naming/v1/addGroup?clusterName=cluster2&amp;namespace=public&amp;unitName&amp;vGroup=my_test_tx_group</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <p>（其中namespace是client端配置的命名空间，vGroup是client端配置的事务分组，clusterName是需要映射到的server端的集群名称）</p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="切换client端的事务分组-seata集群的映射关系切流">切换client端  的事务分组-&gt;seata集群的映射关系（切流）<a href="#切换client端的事务分组-seata集群的映射关系切流" class="hash-link" aria-label="切换client端的事务分组-&gt;seata集群的映射关系（切流）的直接链接" title="切换client端的事务分组-&gt;seata集群的映射关系（切流）的直接链接">​</a></h3>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="切换client端的事务分组-seata集群的映射关系切流">切换client端的事务分组-&gt;seata集群的映射关系（切流）<a href="#切换client端的事务分组-seata集群的映射关系切流" class="hash-link" aria-label="切换client端的事务分组-&gt;seata集群的映射关系（切流）的直接链接" title="切换client端的事务分组-&gt;seata集群的映射关系（切流）的直接链接">​</a></h3>
 <p>向一个namingserver节点发起修改事务分组映射关系的http请求（namingserver节点会自动同步给其它节点）</p>
 <div class="language-shell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-shell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -X POST -H &quot;authorization: Bearer xxxxxxx&quot; http://127.0.0.1:8081/naming/v1/changeGroup?clusterName=cluster2&amp;namespace=public&amp;unitName&amp;vGroup=my_test_tx_group</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <p>（其中namespace是client端配置的命名空间，vGroup是client端配置的事务分组，clusterName是需要映射到的server端的集群名称）</p>
-<p>随后,启动 Seata-Server 后，Client 配置完成后启动应用就可以正式体验 Seata 服务。</p>
+<p>随后Client 配置完成后启动应用就可以正式体验 Seata 服务。</p>
 <p>Tips：</p>
 <ul>
-<li>1.请确保client与server的注册处 于同一个namespace，不然会找不到服务。</li>
+<li>1.请确保client  与server的注册处于同一个namespace，不然会找不到服务。</li>
 <li>2.注意namingserver只允许在内网使用,切勿暴露到公网环境</li>
 <li>3.namingserver处于实验性feature，故后续可能有一定改动，请评估和测试到位后再投入使用</li>
 <li>4.针对事务分组的增删改必须通过namingserver的open-api，如果绕过可能会导致数据不一致，造成服务发现失败或者异常</li>
